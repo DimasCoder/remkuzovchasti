@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import {HashRouter as Router} from "react-router-dom";
+import Backdrop from "./components/Backdrop/Backdrop";
+import Header from "./components/Header/Header";
+import SideDrawer from "./components/SideDraw/SideDrawer";
+import Catalog from "./components/Catalog/Catalog";
+import MainSection from "./components/MainSection/MainSection";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+    state = {
+        sideDrawerOpen : false
+    };
+
+    drawerToggleClickHandler = () => {
+        this.setState((prevState) => {
+            return {sideDrawerOpen: !prevState.sideDrawerOpen}
+        });
+    };
+
+    backdropClickHandler = () => {
+        this.setState({sideDrawerOpen: false})
+    }
+    render() {
+        let sideDrawer, backdrop;
+
+        if(this.state.sideDrawerOpen){
+            backdrop = <Backdrop click={this.backdropClickHandler}/>
+        }
+        return (
+            <Router>
+                <Header drawerClickHandler={this.drawerToggleClickHandler} toggle={this.state.sideDrawerOpen}/>
+                <SideDrawer show={this.state.sideDrawerOpen}/>
+                {backdrop}
+                <MainSection/>
+            </Router>
+        );
+    }
 }
 
 export default App;
